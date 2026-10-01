@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:," />
+  <title>Ink &amp; Kind Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500;6..72,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --paper: #f4f0e6;
+      --paper-2: #fffaf0;
+      --ink: #171918;
+      --muted: #4d514e;
+      --line: #171918;
+      --sage: #afc1a7;
+      --blue: #97c1cb;
+      --coral: #fb9a7c;
+      --mustard: #d9bb70;
+      --pine: #17493b;
+      --pink: #f7d7d6;
+      --shadow: 7px 7px 0 #171918;
+      --soft-shadow: 0 22px 60px rgba(24, 25, 24, .13);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #171b19;
+        --paper-2: #222725;
+        --ink: #f7f1e5;
+        --muted: #c7c6be;
+        --line: #f7f1e5;
+        --sage: #708568;
+        --blue: #668d96;
+        --coral: #c86f59;
+        --mustard: #aa8846;
+        --pine: #a9d5bf;
+        --pink: #6e4a4a;
+        --shadow: 7px 7px 0 #f7f1e5;
+        --soft-shadow: 0 22px 60px rgba(0, 0, 0, .3);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Public Sans", sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .skip-link {
+      position: fixed;
+      z-index: 99;
+      left: 14px;
+      top: 14px;
+      transform: translateY(-150%);
+      background: var(--ink);
+      color: var(--paper);
+      padding: 10px 14px;
+    }
+    .skip-link:focus { transform: translateY(0); }
+    .page { width: min(1180px, calc(100% - 36px)); margin: 0 auto; }
+    .utility {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 72px;
+      border-bottom: 1.5px solid var(--line);
+      font-family: "DM Mono", monospace;
+      font-size: .78rem;
+    }
+    .utility p { margin: 0; }
+    .utility nav { display: flex; flex-wrap: wrap; gap: 18px; }
+    .utility a { text-decoration-thickness: 1px; text-underline-offset: 4px; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, .92fr) minmax(420px, 1.08fr);
+      align-items: center;
+      gap: clamp(42px, 7vw, 88px);
+      padding: clamp(54px, 8vw, 104px) 0 clamp(68px, 10vw, 122px);
+    }
+    .hero-copy { position: relative; z-index: 2; }
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--pine);
+      font-family: "DM Mono", monospace;
+      font-size: .8rem;
+      font-weight: 500;
+    }
+    h1, h2, h3 { font-family: "Newsreader", serif; line-height: .98; }
+    h1 {
+      max-width: 700px;
+      margin: 0;
+      font-size: clamp(4rem, 8vw, 7.2rem);
+      font-weight: 700;
+      letter-spacing: -.055em;
+    }
+    .hero .lede {
+      max-width: 580px;
+      margin: 28px 0 0;
+      font-size: clamp(1.08rem, 1.9vw, 1.35rem);
+      line-height: 1.5;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 48px;
+      padding: 12px 18px;
+      border: 1.5px solid var(--line);
+      background: var(--ink);
+      color: var(--paper);
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 4px 4px 0 var(--coral);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .btn.secondary { background: transparent; color: var(--ink); box-shadow: none; }
+    .btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--coral); }
+    .btn.secondary:hover { box-shadow: 4px 4px 0 var(--blue); }
+    .btn:focus-visible, .thumb:focus-visible, .modal-close:focus-visible {
+      outline: 3px solid var(--coral);
+      outline-offset: 4px;
+    }
+    .hero-art { position: relative; }
+    .hero-art::before {
+      content: "four originals • one wild little family";
+      position: absolute;
+      z-index: 2;
+      right: -16px;
+      top: -18px;
+      max-width: 170px;
+      padding: 10px 12px;
+      border: 1.5px solid var(--line);
+      background: var(--pink);
+      font: 500 .72rem/1.35 "DM Mono", monospace;
+      transform: rotate(3deg);
+    }
+    .hero-art img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border: 1.5px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .caption {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font: .75rem/1.5 "DM Mono", monospace;
+    }
+
+    .ticker {
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      border-block: 1.5px solid var(--line);
+      background: var(--mustard);
+      overflow: hidden;
+    }
+    .ticker-inner {
+      display: flex;
+      width: max-content;
+      padding: 13px 0;
+      font: 500 .78rem "DM Mono", monospace;
+      white-space: nowrap;
+      animation: drift 28s linear infinite;
+    }
+    .ticker span { padding: 0 23px; }
+    @keyframes drift { to { transform: translateX(-50%); } }
+
+    section { padding: clamp(72px, 10vw, 124px) 0; }
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, .55fr);
+      gap: 38px;
+      align-items: end;
+      margin-bottom: 42px;
+    }
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(3rem, 6vw, 5.4rem);
+      letter-spacing: -.045em;
+    }
+    .section-head p { margin: 0; color: var(--muted); }
+
+    .drop {
+      border-bottom: 1.5px solid var(--line);
+    }
+    .drop-layout {
+      display: grid;
+      grid-template-columns: minmax(320px, .92fr) minmax(0, 1.08fr);
+      gap: clamp(38px, 7vw, 84px);
+      align-items: center;
+    }
+    .drop-image {
+      position: relative;
+      border: 1.5px solid var(--line);
+      background: var(--sage);
+      box-shadow: var(--soft-shadow);
+    }
+    .drop-image::after {
+      content: "LIVE ON ETSY";
+      position: absolute;
+      right: -14px;
+      bottom: 20px;
+      padding: 8px 12px;
+      background: var(--ink);
+      color: var(--paper);
+      font: 500 .72rem "DM Mono", monospace;
+      transform: rotate(-2deg);
+    }
+    .drop-image img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .drop-details h3 {
+      margin: 0 0 16px;
+      font-size: clamp(2.4rem, 5vw, 4.6rem);
+      letter-spacing: -.04em;
+    }
+    .drop-details > p { color: var(--muted); font-size: 1.08rem; }
+    .specs {
+      list-style: none;
+      margin: 28px 0 32px;
+      padding: 0;
+      border-top: 1.5px solid var(--line);
+    }
+    .specs li {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 13px 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--line) 35%, transparent);
+    }
+    .specs span:first-child { color: var(--muted); }
+    .specs strong { text-align: right; }
+    .note { font: .76rem/1.5 "DM Mono", monospace; color: var(--muted); }
+    .drop-details .cta-row { margin-top: 24px; }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .thumb {
+      position: relative;
+      padding: 0;
+      border: 1.5px solid var(--line);
+      background: transparent;
+      cursor: zoom-in;
+      overflow: hidden;
+    }
+    .thumb img { width: 100%; aspect-ratio: 1; object-fit: cover; transition: transform .28s ease; }
+    .thumb:hover img { transform: scale(1.025); }
+    .thumb span {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      padding: 6px 9px;
+      background: var(--paper-2);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      font: 500 .68rem "DM Mono", monospace;
+    }
+
+    .shop {
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      padding-inline: max(18px, calc((100vw - 1180px) / 2));
+      background: var(--pine);
+      color: var(--paper-2);
+    }
+    .shop .section-head p { color: color-mix(in srgb, var(--paper-2) 78%, transparent); }
+    .shop-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 18px; }
+    .shop-card {
+      min-height: 330px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(26px, 4vw, 46px);
+      border: 1.5px solid currentColor;
+      color: #171918;
+    }
+    .shop-card:first-child { background: var(--coral); }
+    .shop-card:last-child { background: var(--mustard); }
+    .shop-card .number { font: 500 .76rem "DM Mono", monospace; }
+    .shop-card h3 { margin: 18px 0 10px; font-size: clamp(2.4rem, 4vw, 4rem); letter-spacing: -.035em; }
+    .shop-card p { max-width: 520px; margin: 0; }
+    .shop-featured {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px 44px;
+      margin-bottom: 18px;
+      padding: clamp(26px, 4vw, 44px);
+      border: 1.5px solid currentColor;
+      background: var(--coral);
+      color: #171918;
+    }
+    .shop-featured-inner { max-width: 660px; }
+    .shop-featured .number { font: 500 .76rem "DM Mono", monospace; }
+    .shop-featured h3 {
+      margin: 14px 0 10px;
+      font-size: clamp(2.2rem, 3.6vw, 3.3rem);
+      letter-spacing: -.035em;
+    }
+    .shop-featured p { margin: 0; }
+    .shop-featured .text-link { margin-top: 0; white-space: nowrap; }
+    .featured-badge {
+      position: absolute;
+      top: -15px;
+      right: 22px;
+      padding: 8px 12px;
+      border: 1.5px solid #171918;
+      background: #fffaf0;
+      color: #171918;
+      font: 500 .72rem "DM Mono", monospace;
+      transform: rotate(2deg);
+    }
+    .shop-elsewhere {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px 24px;
+      margin-top: 18px;
+      padding: 15px 22px;
+      border: 1.5px solid currentColor;
+      background: var(--sage);
+      color: #171918;
+    }
+    .shop-elsewhere .number { font: 500 .76rem "DM Mono", monospace; }
+    .elsewhere-links { display: flex; flex-wrap: wrap; gap: 6px 30px; }
+    .shop-elsewhere .text-link { margin-top: 0; font-size: 1.02rem; }
+    .text-link {
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 28px;
+      padding-bottom: 3px;
+      border-bottom: 2px solid currentColor;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .text-link:hover { gap: 13px; }
+
+    .about {
+      display: grid;
+      grid-template-columns: minmax(0, .68fr) minmax(0, 1.32fr);
+      gap: clamp(40px, 8vw, 110px);
+      align-items: start;
+    }
+    .about .label { margin: 10px 0 0; font: 500 .76rem "DM Mono", monospace; color: var(--pine); }
+    .about h2 {
+      margin: 0;
+      font-size: clamp(2.8rem, 5vw, 5.1rem);
+      letter-spacing: -.045em;
+    }
+    .about-copy { font-size: clamp(1.08rem, 2vw, 1.35rem); line-height: 1.55; }
+    .about-copy p { margin: 0 0 18px; }
+    .signature { font-family: "Newsreader", serif; font-size: 1.35em; font-style: italic; }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 28px 0 calc(28px + env(safe-area-inset-bottom));
+      border-top: 1.5px solid var(--line);
+      color: var(--muted);
+      font: .72rem/1.5 "DM Mono", monospace;
+    }
+    footer p { margin: 0; }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      place-items: center;
+      padding: 22px;
+      background: rgba(8, 10, 9, .86);
+    }
+    .modal.open { display: grid; }
+    .modal figure { position: relative; width: min(760px, 100%); margin: 0; }
+    .modal img { width: 100%; max-height: 82vh; object-fit: contain; background: #fff; }
+    .modal-close {
+      position: absolute;
+      top: -14px;
+      right: -14px;
+      width: 44px;
+      height: 44px;
+      border: 1.5px solid #fff;
+      border-radius: 50%;
+      background: #171918;
+      color: #fff;
+      font: 500 1.3rem "Public Sans", sans-serif;
+      cursor: pointer;
+    }
+    .modal figcaption { padding-top: 10px; color: #fff; font: .78rem "DM Mono", monospace; }
+
+    @media (max-width: 840px) {
+      .utility { align-items: flex-start; padding: 18px 0; }
+      .utility nav { justify-content: flex-end; gap: 12px; }
+      .hero { grid-template-columns: 1fr; padding-top: 58px; }
+      .hero-art { width: min(580px, 94%); margin-left: auto; }
+      .section-head, .drop-layout, .about { grid-template-columns: 1fr; }
+      .section-head { align-items: start; }
+      .section-head p { max-width: 600px; }
+      .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .shop-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .page { width: min(100% - 28px, 1180px); }
+      .utility { display: block; min-height: 0; }
+      .utility p { margin-bottom: 10px; }
+      .utility nav { justify-content: flex-start; }
+      .utility nav a:nth-child(2) { display: none; }
+      h1 { font-size: clamp(3.45rem, 17vw, 5rem); }
+      .hero { gap: 46px; }
+      .hero-art { width: calc(100% - 10px); margin-right: 10px; }
+      .hero-art::before { right: -8px; top: -26px; max-width: 145px; }
+      .caption { max-width: 90%; }
+      .cta-row { display: grid; }
+      .btn { width: 100%; }
+      .ticker-inner { animation-duration: 23s; }
+      .section-head { margin-bottom: 30px; }
+      .drop-layout { gap: 46px; }
+      .drop-image::after { right: -7px; bottom: 12px; }
+      .specs li { align-items: baseline; }
+      .gallery-grid { gap: 8px; }
+      .shop { padding-inline: 14px; }
+      .shop-card { min-height: 300px; }
+      footer { display: block; }
+      footer p + p { margin-top: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .ticker-inner { animation: none; }
+      .btn, .thumb img { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to the art</a>
+  <div class="page">
+    <div class="utility">
+      <p><strong>Ink &amp; Kind Studio</strong> / hand-drawn wildlife from the Texas Gulf Coast</p>
+      <nav aria-label="Page sections">
+        <a href="#new">New work</a>
+        <a href="#gallery">Look closer</a>
+        <a href="#shop">Shop</a>
+      </nav>
+    </div>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Ink under the nails. Kindness in the work.</p>
+          <h1 id="hero-title">Wild things,<br>drawn by hand.</h1>
+          <p class="lede">Original wildlife art with field grit, soft edges, and just enough mischief. Made for people who know the overlooked animals are usually the best ones.</p>
+          <div class="cta-row">
+            <a class="btn" href="#shop">Shop the wild things <span aria-hidden="true">↘</span></a>
+            <a class="btn secondary" href="#new">Meet the raccoons</a>
+          </div>
+        </div>
+        <div class="hero-art">
+          <img src="assets/raccoon-lineup.jpg" alt="Four hand-drawn raccoons on sage, blue, coral, and mustard backgrounds: standing, climbing, holding an acorn, and walking on a branch">
+          <p class="caption">The raccoon quartet is live on Etsy now.</p>
+        </div>
+      </section>
+
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker-inner">
+          <span>ORIGINAL WILDLIFE ART</span><span>•</span><span>STICKERS WITH TEETH</span><span>•</span><span>GULF COAST MADE</span><span>•</span><span>FOR THE WILD-HEARTED</span><span>•</span>
+          <span>ORIGINAL WILDLIFE ART</span><span>•</span><span>STICKERS WITH TEETH</span><span>•</span><span>GULF COAST MADE</span><span>•</span><span>FOR THE WILD-HEARTED</span><span>•</span>
+        </div>
+      </div>
+
+      <section class="drop" id="new" aria-labelledby="drop-title">
+        <div class="section-head">
+          <h2 id="drop-title">The new drop</h2>
+          <p>Four personalities, one gloriously chunky sticker sheet. The stander and the climber also come as keychains, and everything is live on Etsy.</p>
+        </div>
+        <div class="drop-layout">
+          <div class="drop-image">
+            <img src="assets/raccoon-standing.jpg" alt="Hand-drawn raccoon standing upright on a soft sage background">
+          </div>
+          <div class="drop-details">
+            <p class="eyebrow">Raccoon Quartet</p>
+            <h3>Big stickers.<br>Small crimes.</h3>
+            <p>A full-sheet lineup of the stander, the climber, the acorn hoarder, and the happy walker. Sweet faces, excellent tails, absolutely no remorse.</p>
+            <ul class="specs" aria-label="Sticker sheet details">
+              <li><span>Sheet</span><strong>8.5 × 11 in, kiss-cut vinyl</strong></li>
+              <li><span>Sticker size</span><strong>3.8 in each</strong></li>
+              <li><span>Artwork</span><strong>Four original poses</strong></li>
+              <li><span>Keychains</span><strong>The stander + the climber</strong></li>
+            </ul>
+            <p class="note">Sheets, keychains, and small crimes, live and shipping now from my Etsy shop.</p>
+            <div class="cta-row">
+              <a class="btn" href="https://inkandkindstudio.etsy.com" target="_blank" rel="noopener noreferrer">Shop the raccoons on Etsy <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="gallery" aria-labelledby="gallery-title">
+        <div class="section-head">
+          <h2 id="gallery-title">Look closer</h2>
+          <p>Tap any raccoon for a full-size look at the ink lines, soft color blocks, and tiny expressions doing most of the troublemaking.</p>
+        </div>
+        <div class="gallery-grid">
+          <button class="thumb" type="button" data-full="assets/raccoon-standing.jpg" data-caption="The stander, on sage" aria-label="View the standing raccoon larger">
+            <img src="assets/raccoon-standing.jpg" alt="Standing raccoon illustration on sage">
+            <span>THE STANDER</span>
+          </button>
+          <button class="thumb" type="button" data-full="assets/raccoon-climbing.jpg" data-caption="The climber, on dusty blue" aria-label="View the climbing raccoon larger">
+            <img src="assets/raccoon-climbing.jpg" alt="Raccoon hugging a tree trunk on dusty blue">
+            <span>THE CLIMBER</span>
+          </button>
+          <button class="thumb" type="button" data-full="assets/raccoon-acorn.jpg" data-caption="The acorn hoarder, on coral" aria-label="View the acorn-holding raccoon larger">
+            <img src="assets/raccoon-acorn.jpg" alt="Seated raccoon holding an acorn on coral">
+            <span>THE HOARDER</span>
+          </button>
+          <button class="thumb" type="button" data-full="assets/raccoon-walking.jpg" data-caption="The happy walker, on mustard" aria-label="View the walking raccoon larger">
+            <img src="assets/raccoon-walking.jpg" alt="Raccoon walking along a branch on mustard">
+            <span>THE WALKER</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="shop" id="shop" aria-labelledby="shop-title">
+        <div class="section-head">
+          <h2 id="shop-title">Find your wild one</h2>
+          <p>Wear it, stick it somewhere good, or put it on the wall. Everything current sells on Etsy first.</p>
+        </div>
+        <article class="shop-featured">
+          <span class="featured-badge" aria-hidden="true">LIVE NOW</span>
+          <div class="shop-featured-inner">
+            <span class="number">01 / ETSY</span>
+            <h3>The Raccoon Quartet</h3>
+            <p>The full lineup on one 8.5 × 11 kiss-cut vinyl sticker sheet, plus keychains of the stander and the climber. Out now, shipping from my Etsy shop.</p>
+          </div>
+          <a class="text-link" href="https://inkandkindstudio.etsy.com" target="_blank" rel="noopener noreferrer">Shop on Etsy <span aria-hidden="true">↗</span></a>
+        </article>
+        <div class="shop-grid">
+          <article class="shop-card">
+            <div>
+              <span class="number">02 / ETSY</span>
+              <h3>The whole shop</h3>
+              <p>Clothing, totes, stickers, and keychains across the current lineup. The main storefront for everything Ink &amp; Kind.</p>
+            </div>
+            <a class="text-link" href="https://inkandkindstudio.etsy.com" target="_blank" rel="noopener noreferrer">Browse on Etsy <span aria-hidden="true">↗</span></a>
+          </article>
+          <article class="shop-card">
+            <div>
+              <span class="number">03 / STICKER SPOTLIGHT</span>
+              <h3>Holy Howl-O-Ween</h3>
+              <p>A hand-drawn Texas wildlife crew, dressed for a little October chaos. Available as a die-cut sticker.</p>
+            </div>
+            <a class="text-link" href="https://www.stickermule.com/inkandkindstudio/item/21398081/discount" target="_blank" rel="noopener noreferrer">Get the sticker <span aria-hidden="true">↗</span></a>
+          </article>
+        </div>
+        <div class="shop-elsewhere">
+          <span class="number">04 / ELSEWHERE</span>
+          <div class="elsewhere-links">
+            <a class="text-link" href="https://www.redbubble.com/people/therealkbyers/shop" target="_blank" rel="noopener noreferrer">Art prints on Redbubble <span aria-hidden="true">↗</span></a>
+            <a class="text-link" href="https://www.deviantart.com/therealkbyers" target="_blank" rel="noopener noreferrer">Follow along on DeviantArt <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="about" id="about" aria-labelledby="about-title">
+        <p class="label">THE HAND BEHIND THE INK</p>
+        <div>
+          <h2 id="about-title">Field experience, drawn into every line.</h2>
+          <div class="about-copy">
+            <p>Artist and wildlife rehabilitator Katie Byers makes work rooted in more than thirty years of hands-on animal care on the Texas Gulf Coast. The subjects are often scrappy, misunderstood, or too useful to be glamorous.</p>
+            <p>That is exactly the point. <span class="signature">The overlooked ones deserve good art, too.</span></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Ink &amp; Kind Studio • original art by Katie Byers</p>
+      <p>Texas Gulf Coast • drawn with ink &amp; a soft spot for troublemakers</p>
+    </footer>
+  </div>
+
+  <div class="modal" id="image-modal" role="dialog" aria-modal="true" aria-label="Artwork preview" aria-hidden="true">
+    <figure>
+      <button class="modal-close" type="button" aria-label="Close artwork preview">×</button>
+      <img src="assets/raccoon-standing.jpg" alt="">
+      <figcaption></figcaption>
+    </figure>
+  </div>
+
+  <script>
+    (function () {
+      var modal = document.getElementById('image-modal');
+      var modalImage = modal.querySelector('img');
+      var modalCaption = modal.querySelector('figcaption');
+      var closeButton = modal.querySelector('.modal-close');
+      var lastTrigger = null;
+
+      function openModal(trigger) {
+        lastTrigger = trigger;
+        modalImage.src = trigger.getAttribute('data-full');
+        modalImage.alt = trigger.querySelector('img').alt;
+        modalCaption.textContent = trigger.getAttribute('data-caption');
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        closeButton.focus();
+      }
+
+      function closeModal() {
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        if (lastTrigger) lastTrigger.focus();
+      }
+
+      document.querySelectorAll('.thumb').forEach(function (button) {
+        button.addEventListener('click', function () { openModal(button); });
+      });
+      closeButton.addEventListener('click', closeModal);
+      modal.addEventListener('click', function (event) {
+        if (event.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && modal.classList.contains('open')) closeModal();
+      });
+    }());
+  </script>
+</body>
+</html>
